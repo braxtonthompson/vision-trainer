@@ -1,4 +1,5 @@
-<div *ngFor="let square of squares" (click)="onSquareClicked.emit(square)">
-    {{square.file}}
-    {{square.rank}}
-</div>
+<app-square 
+    *ngFor="let square of squares" 
+    [square]="square"
+    (click)="onSquareClicked.emit(square)">
+</app-square>

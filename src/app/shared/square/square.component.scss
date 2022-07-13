@@ -1,0 +1,17 @@
+$square-size: 100%;
+
+.square {
+    height: $square-size;
+    width: $square-size;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.light {
+    background-color: aliceblue;
+}
+
+.dark {
+    background-color: darkslateblue;
+}

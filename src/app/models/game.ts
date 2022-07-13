@@ -1,5 +1,5 @@
 import { ColorType } from "../types/color.type";
-import { FILES } from "../types/file.type";
+import { FILES, FileType } from "../types/file.type";
 import { GameMode } from "../types/game-mode.type";
 import { GameState } from "../types/game-state.type";
 import { RANKS, RankType } from "../types/rank.type";
@@ -13,6 +13,7 @@ export interface IGame {
     gamePerspective: ColorType;
     squares: ISquare[];
     selections: ISelection[];
+    nextPhase: () => void;
 }
 
 export class Game implements IGame {
@@ -27,17 +28,51 @@ export class Game implements IGame {
         this.gameMode = gameMode;
         this.gameLength = gameLength;
         this.gamePerspective = gamePerspective;
-        this.squares = this.buildSquares(gamePerspective);
+        this.squares = this.getSquares(gamePerspective);
     }
 
-    private buildSquares(gamePerspective: ColorType): Square[] {
+    public nextPhase(): void {
+        switch(this.gameState) {
+            case 'pending':
+                this.gameState = 'countdown';
+                break;
+            case 'countdown':
+                this.gameState = 'active';
+                break;
+            case 'active':
+                this.gameState = 'complete';
+                break;
+            default: 
+                return;
+        }
+    }
+
+    private getSquares(gamePerspective: ColorType): Square[] {
         const squares: Square[] = [];
 
-        for (const rank in RANKS) {
-            for (const file in FILES) {
-                squares.push(new Square(RANKS[rank], FILES[file], 'dark'))
-            }
+        const files: FileType[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+        const ranks: RankType[] = [8, 7, 6, 5, 4, 3, 2, 1];
+
+        switch(gamePerspective) {
+            case 'light':
+                squares.push(...this.buildSquares(files, ranks));
+                break;
+            case 'dark':
+                squares.push(...this.buildSquares(files.reverse(), ranks.reverse()))
         }
+
+        return squares;
+    }
+
+    private buildSquares(files: FileType[], ranks: RankType[]): Square[] {
+        const squares: Square[] = [];
+
+        ranks.forEach((rank, rankIndex) => {
+            files.forEach((file, fileIndex) => {
+                const color: ColorType = (rankIndex + fileIndex + 2) % 2 === 0 ? 'light' : 'dark';
+                squares.push(new Square(file, rank, color))
+            })
+        })
 
         return squares;
     }

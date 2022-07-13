@@ -11,7 +11,7 @@ export class AppComponent {
   game: Game;
 
   constructor() {
-    this.game = new Game('squares', 30, 'light');
+    this.game = new Game('squares', 5, 'light');
   }
   
 }

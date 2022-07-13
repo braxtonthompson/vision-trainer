@@ -3,19 +3,19 @@ import { FileType } from "../types/file.type";
 import { RankType } from "../types/rank.type";
 
 export interface ISquare {
-    rank: RankType;
     file: FileType;
+    rank: RankType;
     color: ColorType;
 }
 
 export class Square implements ISquare {
-    rank: RankType;
     file: FileType;
+    rank: RankType;
     color: ColorType;
 
-    constructor(rank: RankType, file: FileType, color: ColorType) {
-        this.rank = rank;
+    constructor(file: FileType, rank: RankType, color: ColorType) {
         this.file = file;
+        this.rank = rank;
         this.color = color;
     }
 }

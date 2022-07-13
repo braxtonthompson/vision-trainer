@@ -1,1 +1,14 @@
-<app-chessboard [squares]="game.squares" (onSquareClicked)="onSquareClicked($event)"></app-chessboard>
+<div *ngIf="game.gameState === 'pending' || game.gameState === 'countdown'">{{ game.gameLength }}</div>
+<div *ngIf="game.gameState === 'active'">{{ gameTimer$ | async }}</div>
+<div *ngIf="game.gameState === 'complete'">0</div>
+
+<div>{{ game.gameState }}</div>
+
+<div class="board-container">
+
+    <div class="countdown-timer" *ngIf="countdownTimer$ | async as countdownTimer">
+        {{ countdownTimer }}
+    </div>
+
+    <app-chessboard [squares]="game.squares" (onSquareClicked)="onSquareClicked($event)"></app-chessboard>
+</div>
